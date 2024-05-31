@@ -22,7 +22,7 @@ public:  //used externally, functions,
 
   MCP2515(const uint8_t _CS, const uint32_t _SPI_CLOCK = DEFAULT_SPI_CLOCK, SPIClass *_SPI = nullptr);
 
-  uint8_t begin(uint8_t IDmode, uint8_t speed, uint8_t clock);
+  uint8_t config(uint8_t IDmode, uint8_t speed, uint8_t clock);
   uint8_t def_Mask(uint8_t num, uint32_t valData);
   uint8_t def_Filter(uint8_t num, uint32_t valData);
   uint8_t def_Mask(uint8_t num, uint8_t ext, uint32_t valData);
@@ -30,8 +30,8 @@ public:  //used externally, functions,
 
   uint8_t sendMessage(uint32_t ID, uint8_t ext, uint8_t length, uint8_t *buffer);
   uint8_t sendMessage(uint32_t ID, uint8_t length, uint8_t *buffer);
-  uint8_t getMessage(uint32_t *ID, uint8_t *ext, uint8_t *length, uint8_t buffer[]);
-  uint8_t getMessage(uint32_t *ID, uint8_t *length, uint8_t buffer[]);
+  uint8_t receiveMessage(uint32_t *ID, uint8_t *ext, uint8_t *length, uint8_t buffer[]);
+  uint8_t receiveMessage(uint32_t *ID, uint8_t *length, uint8_t buffer[]);
   uint8_t checkMessage(void);
 
   uint8_t setConfigMode();
@@ -48,7 +48,7 @@ private:  //used internally, functions,
 
   uint8_t defCANMessage(uint32_t ID, uint8_t RTR, uint8_t ext, uint8_t length, uint8_t *Data);
   uint8_t transmitMessage();
-  uint8_t receiveMessage();
+  uint8_t getMessage();
 
   uint8_t mcp2515_readRegister(const uint8_t spi_reg);
   void mcp2515_readRegisterS(const uint8_t spi_reg, uint8_t values[], const uint8_t n);

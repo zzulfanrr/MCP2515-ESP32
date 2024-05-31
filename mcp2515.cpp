@@ -499,11 +499,11 @@ uint8_t MCP2515::mcp2515_init(const uint8_t CANIDMode, const uint8_t CANSpeed, c
   mcp2515_reset();
 
   if (setConfigMode() == MODE_CONFIG) {
-    Serial.println("Set Config Mode Success!");
+    // Serial.println("Set Config Mode Success!");
 
     mcp2515_rate(CANSpeed, CANClock);
 
-    Serial.println("Init BMF and ID Mode");
+    // Serial.println("Init BMF and ID Mode");
     mcp2515_initBMF();
 
     mcp2515_setRegister(CANINTE, RX0IF | RX1IF);
@@ -539,13 +539,13 @@ uint8_t MCP2515::mcp2515_init(const uint8_t CANIDMode, const uint8_t CANSpeed, c
     }
 
     if (setLoopbackMode() == MODE_LOOPBACK) {
-      Serial.println("Set Loop Back Mode Success!");
+      //Serial.println("Set Loop Back Mode Success!");
     } else {
-      Serial.println("Set Loop Back Mode Failed!");
+      //Serial.println("Set Loop Back Mode Failed!");
     }
     return MCP2515_OK;
   } else {
-    Serial.println("Set Config Mode Failed!");
+    //Serial.println("Set Config Mode Failed!");
     return MCP2515_FAIL;
   }
 }
@@ -575,12 +575,12 @@ MCP2515::MCP2515(const uint8_t _CS, const uint32_t _SPI_CLOCK, SPIClass *_SPI) {
 }
 
 /*********************************************************************************************************
-* Function      : begin
-* uint8_t begin(uint8_t IDmode, uint8_t speed, uint8_t clock);
+* Function      : config
+* uint8_t config(uint8_t IDmode, uint8_t speed, uint8_t clock);
 * Description   : Declare Contoller initialization parameters (mode, speed, clock)
  *********************************************************************************************************/
 
-uint8_t MCP2515::begin(uint8_t IDmode, uint8_t speed, uint8_t clock) {
+uint8_t MCP2515::config(uint8_t IDmode, uint8_t speed, uint8_t clock) {
   uint8_t res;
 
   MCP2515_SPI->begin();
@@ -778,12 +778,12 @@ uint8_t MCP2515::sendMessage(uint32_t ID, uint8_t length, uint8_t *buffer) {
 }
 
 /*********************************************************************************************************
-* Function      : receiveMessage()
-* receiveMessage()
-* Description   : Receive Message Transmission
+* Function      : getMessage()
+* getMessage()
+* Description   : Get Message Transmission from Buffer
  *********************************************************************************************************/
 
-uint8_t MCP2515::receiveMessage() {
+uint8_t MCP2515::getMessage() {
   uint8_t status, res;
 
   status = mcp2515_getStatus();
@@ -806,13 +806,13 @@ uint8_t MCP2515::receiveMessage() {
 }
 
 /*********************************************************************************************************
-* Function      : getMessage()
-* getMessage()
-* Description   : Get Message
+* Function      : receiveMessage()
+* receiveMessage()
+* Description   : receive Message
  *********************************************************************************************************/
 
-uint8_t MCP2515::getMessage(uint32_t *ID, uint8_t *ext, uint8_t *length, uint8_t buffer[]) {
-  if (receiveMessage() == CAN_NOMSG) {
+uint8_t MCP2515::receiveMessage(uint32_t *ID, uint8_t *ext, uint8_t *length, uint8_t buffer[]) {
+  if (getMessage() == CAN_NOMSG) {
     return CAN_NOMSG;
   }
 
@@ -827,13 +827,13 @@ uint8_t MCP2515::getMessage(uint32_t *ID, uint8_t *ext, uint8_t *length, uint8_t
 }
 
 /*********************************************************************************************************
-* Function      : getMessage()
-* getMessage()
-* Description   : Get Message
+* Function      : receiveMessage()
+* receiveMessage()
+* Description   : Receive Message
  *********************************************************************************************************/
 
-uint8_t MCP2515::getMessage(uint32_t *ID, uint8_t *length, uint8_t buffer[]) {
-  if (receiveMessage() == CAN_NOMSG) {
+uint8_t MCP2515::receiveMessage(uint32_t *ID, uint8_t *length, uint8_t buffer[]) {
+  if (getMessage() == CAN_NOMSG) {
     return CAN_NOMSG;
   }
 
