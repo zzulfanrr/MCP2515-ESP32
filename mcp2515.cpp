@@ -132,6 +132,17 @@ void MCP2515::mcp2515_modifyRegister(const uint8_t spi_reg, const uint8_t mask, 
 }
 
 /*********************************************************************************************************
+* Function name:           mcp2515_setSleepWakeup
+* void mcp2515_setSleepWakeup(const uint8_t enable)
+* Descriptions:            Set bit interupt to active the sleeping bus if there are any activity on the bus
+*********************************************************************************************************/
+
+void MCP2515::mcp2515_setSleepWakeup(const uint8_t enable)
+{
+    mcp2515_modifyRegister(CANINTE, WAKIF, enable ? WAKIF : 0);
+}
+
+/*********************************************************************************************************
 * Function name:           mcp2515_getStatus
 * uint8_t mcp2515_getStatus(void)
 * Descriptions:          
@@ -209,37 +220,37 @@ uint8_t MCP2515::mcp2515_rate(const uint8_t CANSpeed, const uint8_t CANClock) {
   uint8_t set, cfg1, cfg2, cfg3;
   /*  
       CAN BAUD RATE:
-      CAN_125KBPS   1
-      CAN_250KBPS   2 //ECU Simulator
-      CAN_500KBPS   3 // CAN 2.0, MCP2515 Speed
-      CAN_1000KBPS  4
+      CAN_125kbps   1
+      CAN_250kbps   2 //ECU Simulator
+      CAN_500kbps   3 // CAN 2.0, MCP2515 Speed
+      CAN_1000kbps  4
       */
   set = 1;
   switch (CANClock) {
     case (MCP2515_8MHZ):  // MCP2515 Clock
       switch (CANSpeed) {
-        case (CAN_125KBPS):
-          cfg1 = MCP2515_8MHz_125kBPS_CFG1;
-          cfg2 = MCP2515_8MHz_125kBPS_CFG2;
-          cfg3 = MCP2515_8MHz_125kBPS_CFG3;
+        case (CAN_125kbps):
+          cfg1 = MCP2515_8MHz_125kbps_CFG1;
+          cfg2 = MCP2515_8MHz_125kbps_CFG2;
+          cfg3 = MCP2515_8MHz_125kbps_CFG3;
           break;
 
-        case (CAN_250KBPS):
-          cfg1 = MCP2515_8MHz_250kBPS_CFG1;
-          cfg2 = MCP2515_8MHz_250kBPS_CFG2;
-          cfg3 = MCP2515_8MHz_250kBPS_CFG3;
+        case (CAN_250kbps):
+          cfg1 = MCP2515_8MHz_250kbps_CFG1;
+          cfg2 = MCP2515_8MHz_250kbps_CFG2;
+          cfg3 = MCP2515_8MHz_250kbps_CFG3;
           break;
 
-        case (CAN_500KBPS):
-          cfg1 = MCP2515_8MHz_500kBPS_CFG1;
-          cfg2 = MCP2515_8MHz_500kBPS_CFG2;
-          cfg3 = MCP2515_8MHz_500kBPS_CFG3;
+        case (CAN_500kbps):
+          cfg1 = MCP2515_8MHz_500kbps_CFG1;
+          cfg2 = MCP2515_8MHz_500kbps_CFG2;
+          cfg3 = MCP2515_8MHz_500kbps_CFG3;
           break;
 
-        case (CAN_1000KBPS):
-          cfg1 = MCP2515_8MHz_1000kBPS_CFG1;
-          cfg2 = MCP2515_8MHz_1000kBPS_CFG2;
-          cfg3 = MCP2515_8MHz_1000kBPS_CFG3;
+        case (CAN_1000kbps):
+          cfg1 = MCP2515_8MHz_1000kbps_CFG1;
+          cfg2 = MCP2515_8MHz_1000kbps_CFG2;
+          cfg3 = MCP2515_8MHz_1000kbps_CFG3;
           break;
 
         default:
@@ -251,28 +262,28 @@ uint8_t MCP2515::mcp2515_rate(const uint8_t CANSpeed, const uint8_t CANClock) {
 
     case (MCP2515_16MHZ):
       switch (CANSpeed) {
-        case (CAN_125KBPS):
-          cfg1 = MCP2515_16MHz_125kBPS_CFG1;
-          cfg2 = MCP2515_8MHz_125kBPS_CFG2;
-          cfg3 = MCP2515_8MHz_125kBPS_CFG3;
+        case (CAN_125kbps):
+          cfg1 = MCP2515_16MHz_125kbps_CFG1;
+          cfg2 = MCP2515_8MHz_125kbps_CFG2;
+          cfg3 = MCP2515_8MHz_125kbps_CFG3;
           break;
 
-        case (CAN_250KBPS):
-          cfg1 = MCP2515_16MHz_250kBPS_CFG1;
-          cfg2 = MCP2515_16MHz_250kBPS_CFG2;
-          cfg3 = MCP2515_16MHz_250kBPS_CFG3;
+        case (CAN_250kbps):
+          cfg1 = MCP2515_16MHz_250kbps_CFG1;
+          cfg2 = MCP2515_16MHz_250kbps_CFG2;
+          cfg3 = MCP2515_16MHz_250kbps_CFG3;
           break;
 
-        case (CAN_500KBPS):
-          cfg1 = MCP2515_16MHz_500kBPS_CFG1;
-          cfg2 = MCP2515_16MHz_500kBPS_CFG2;
-          cfg3 = MCP2515_16MHz_500kBPS_CFG3;
+        case (CAN_500kbps):
+          cfg1 = MCP2515_16MHz_500kbps_CFG1;
+          cfg2 = MCP2515_16MHz_500kbps_CFG2;
+          cfg3 = MCP2515_16MHz_500kbps_CFG3;
           break;
 
-        case (CAN_1000KBPS):
-          cfg1 = MCP2515_16MHz_1000kBPS_CFG1;
-          cfg2 = MCP2515_16MHz_1000kBPS_CFG2;
-          cfg3 = MCP2515_16MHz_1000kBPS_CFG3;
+        case (CAN_1000kbps):
+          cfg1 = MCP2515_16MHz_1000kbps_CFG1;
+          cfg2 = MCP2515_16MHz_1000kbps_CFG2;
+          cfg3 = MCP2515_16MHz_1000kbps_CFG3;
           break;
 
         default:
@@ -423,8 +434,8 @@ void MCP2515::mcp2515_readCANMessage(const uint8_t buffer_SIDH_reg) {
 
 /*********************************************************************************************************
 * Function name:           mcp2515_getTXBuffer
-* mcp2515_initBMF(void)
-* Descriptions:            Initialize Buffers, Masks, and Filters
+* mcp2515_getTXBuffer(uint8_t *txbuff)
+* Descriptions:            Get Transmitter Buffer
 *********************************************************************************************************/
 
 uint8_t MCP2515::mcp2515_getTXBuffer(uint8_t *txbuff) {
@@ -538,7 +549,7 @@ uint8_t MCP2515::mcp2515_init(const uint8_t CANIDMode, const uint8_t CANSpeed, c
         break;
     }
 
-    if (setLoopbackMode() == MODE_LOOPBACK) {
+    if (setNormalMode() == MODE_NORMAL) {
       //Serial.println("Set Loop Back Mode Success!");
     } else {
       //Serial.println("Set Loop Back Mode Failed!");

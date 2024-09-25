@@ -247,7 +247,7 @@ MCP2515 Register Addresses
 #define MODE_CONFIG		0x80
 #define MODE_LISTENONLY		0x60
 #define MODE_LOOPBACK	0x40
-#define MODE_SLEEP		0x20
+#define MODE_SLEEP		0x22
 #define MODE_NORMAL		0x00
 
 #define MODE_ONESHOT  0x08
@@ -332,46 +332,46 @@ MCP2515 Register Addresses
  *********************************************************************************************************/
 
 // CAN BAUD RATE (Speed)
-#define CAN_125KBPS   1
-#define CAN_250KBPS   2 //ECU Simulator
-#define CAN_500KBPS   3
-#define CAN_1000KBPS  4
+#define CAN_125kbps   1
+#define CAN_250kbps   2 //ECU Simulator
+#define CAN_500kbps   3
+#define CAN_1000kbps  4
 
 // CAN CLOCK
 
 //Speed 8 MHz
-#define MCP2515_8MHz_1000kBPS_CFG1 (0x00)
-#define MCP2515_8MHz_1000kBPS_CFG2 (0xC0)
-#define MCP2515_8MHz_1000kBPS_CFG3 (0x80)
+#define MCP2515_8MHz_1000kbps_CFG1 (0x00)
+#define MCP2515_8MHz_1000kbps_CFG2 (0xC0)
+#define MCP2515_8MHz_1000kbps_CFG3 (0x80)
 
-#define MCP2515_8MHz_500kBPS_CFG1 (0x00)
-#define MCP2515_8MHz_500kBPS_CFG2 (0xD1)
-#define MCP2515_8MHz_500kBPS_CFG3 (0x81)
+#define MCP2515_8MHz_500kbps_CFG1 (0x00)
+#define MCP2515_8MHz_500kbps_CFG2 (0xD1)
+#define MCP2515_8MHz_500kbps_CFG3 (0x81)
 
-#define MCP2515_8MHz_250kBPS_CFG1 (0x80)
-#define MCP2515_8MHz_250kBPS_CFG2 (0xE5)
-#define MCP2515_8MHz_250kBPS_CFG3 (0x83)
+#define MCP2515_8MHz_250kbps_CFG1 (0x80)
+#define MCP2515_8MHz_250kbps_CFG2 (0xE5)
+#define MCP2515_8MHz_250kbps_CFG3 (0x83)
 
-#define MCP2515_8MHz_125kBPS_CFG1 (0x81)
-#define MCP2515_8MHz_125kBPS_CFG2 (0xE5)
-#define MCP2515_8MHz_125kBPS_CFG3 (0x83)
+#define MCP2515_8MHz_125kbps_CFG1 (0x81)
+#define MCP2515_8MHz_125kbps_CFG2 (0xE5)
+#define MCP2515_8MHz_125kbps_CFG3 (0x83)
 
 //Speed 16 MHz
-#define MCP2515_16MHz_1000kBPS_CFG1 (0x00)
-#define MCP2515_16MHz_1000kBPS_CFG2 (0xCA)
-#define MCP2515_16MHz_1000kBPS_CFG3 (0x81)
+#define MCP2515_16MHz_1000kbps_CFG1 (0x00)
+#define MCP2515_16MHz_1000kbps_CFG2 (0xCA)
+#define MCP2515_16MHz_1000kbps_CFG3 (0x81)
 
-#define MCP2515_16MHz_500kBPS_CFG1 (0x40)
-#define MCP2515_16MHz_500kBPS_CFG2 (0xE5)
-#define MCP2515_16MHz_500kBPS_CFG3 (0x83)
+#define MCP2515_16MHz_500kbps_CFG1 (0x40)
+#define MCP2515_16MHz_500kbps_CFG2 (0xE5)
+#define MCP2515_16MHz_500kbps_CFG3 (0x83)
 
-#define MCP2515_16MHz_250kBPS_CFG1 (0x41)
-#define MCP2515_16MHz_250kBPS_CFG2 (0xE5)
-#define MCP2515_16MHz_250kBPS_CFG3 (0x83)
+#define MCP2515_16MHz_250kbps_CFG1 (0x41)
+#define MCP2515_16MHz_250kbps_CFG2 (0xE5)
+#define MCP2515_16MHz_250kbps_CFG3 (0x83)
 
-#define MCP2515_16MHz_125kBPS_CFG1 (0x43)
-#define MCP2515_16MHz_125kBPS_CFG2 (0xE5)
-#define MCP2515_16MHz_125kBPS_CFG3 (0x83)
+#define MCP2515_16MHz_125kbps_CFG1 (0x43)
+#define MCP2515_16MHz_125kbps_CFG2 (0xE5)
+#define MCP2515_16MHz_125kbps_CFG3 (0x83)
 
 #define MCP2515_8MHZ 1
 #define MCP2515_16MHZ 2
@@ -396,7 +396,7 @@ MCP2515 Register Addresses
 #define MCP2515_FAIL      1
 #define MCP2515_TXBUSY    2
 
-//CAN Debug
+//CAN Debug 
 
 #define CAN_OK              0
 #define CAN_FAIL            1

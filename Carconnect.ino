@@ -29,7 +29,9 @@
 // const char* carconnect_token = "XSH2dDyiF8I5lt8duhso12Z2LbV4sHJCPfxmCmv1";
 // const char* car_collection_id = "018e6937-16a9-727a-8f2d-512b97fa79ed";  // ID Collection Cars
 // const char* obd_collection_id = "018e6934-d49a-76f6-b198-f54956cff23d";  // ID Collection OBD Data2
-// const char* car_id = "018fbd47-f0eb-7a5c-b1de-0f66c8c11b9d";             // ID Car
+// // const char* car_id = "018fbd47-f0eb-7a5c-b1de-0f66c8c11b9d";             // ID Car
+
+// const char* car_id = "018fcde8-34ed-7647-910f-9883439a39bb"; // ID Car Brio
 
 // WiFiClient espClient;
 // PubSubClient client(espClient);
@@ -52,68 +54,17 @@
 // unsigned long prevTX = 0;
 // const unsigned int invlTX = 1000;
 
-// void decodePID(uint8_t pid, uint8_t a, uint8_t b, uint8_t c, uint8_t d, uint8_t e);
-// void carconnect();
-
-// void setup() {
-//   Serial.begin(115200);
-
-//   if (MCP2515.config(MCP2515_STDEXT, CAN_500KBPS, MCP2515_8MHZ) == CAN_OK) {
-//     // Serial.println("Setup Success!");
-//     digitalWrite(INTERNAL_LED, HIGH);
-//     delay(500);
-//     digitalWrite(INTERNAL_LED, LOW);
-//   } else {
-//     // Serial.println("Setup Failed");
-//   }
-//   delay(500);
-
-//   // if (MCP2515.setNormalMode() == MODE_NORMAL) {
-//   //   // Serial.println("Set to Normal Mode successfully!");
-//   // } else {
-//   //   // Serial.println("Failed to set Normal Mode");
-//   // }
-
-//   if (MCP2515.setLoopbackMode() == MODE_LOOPBACK) {
-//     Serial.println("Set to Loop Back Mode successfully!");
-//     digitalWrite(INTERNAL_LED, HIGH);
-//     delay(500);
-//     digitalWrite(INTERNAL_LED, LOW);
-//   } else {
-//     // Serial.println("Failed to set Loop Back Mode");
-//   }
-
-//   pinMode(INTERNAL_LED, OUTPUT);
-//   pinMode(MCP2515_INT, INPUT);
-
-//   WiFi.mode(WIFI_STA);
-
-//   // Serial.print("Connecting to Wi-Fi");
-//   WiFi.begin(ssid, password);
-//   while (WiFi.status() != WL_CONNECTED) {
-//     digitalWrite(INTERNAL_LED, HIGH);
-//     delay(500);
-//     digitalWrite(INTERNAL_LED, LOW);
-//     //   Serial.print(".");
-//   }
-//   Serial.println("Wi-Fi connected!");
-
-//   client.setServer(mqtt_server, mqtt_port);
-//   client.setBufferSize(1000);
-
-//   jsonUser["collection_id"] = car_collection_id;
-//   jsonUser["id"] = car_id;
-// }
+// int count = 0;
 
 // byte dataSets[][8] = {
-//   { 0x02, 0x01, 0x05, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA }, //ECT
-//   { 0x02, 0x01, 0x06, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA }, //STFT
-//   { 0x02, 0x01, 0x0B, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA }, //MAP
-//   { 0x02, 0x01, 0x0C, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA }, //VSS
-//   { 0x02, 0x01, 0x0D, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA }, //RPM
-//   { 0x02, 0x01, 0x0F, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA }, //IAT
-//   { 0x02, 0x01, 0x11, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA }, //TPS
-//   { 0x02, 0x01, 0x1F, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA } //Run Time
+//   { 0x02, 0x01, 0x05, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA },  //ECT
+//   { 0x02, 0x01, 0x06, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA },  //STFT
+//   { 0x02, 0x01, 0x0B, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA },  //MAP
+//   { 0x02, 0x01, 0x0C, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA },  //VSS
+//   { 0x02, 0x01, 0x0D, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA },  //RPM
+//   { 0x02, 0x01, 0x0F, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA },  //IAT
+//   { 0x02, 0x01, 0x11, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA },  //TPS
+//   { 0x02, 0x01, 0x1F, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA }   //Run Time
 // };
 // int currentDataSet = 0;
 
@@ -153,6 +104,63 @@
 
 // bool responseReceived[sizeof(dataSets) / sizeof(dataSets[0])] = { 0 };
 
+// void decodePID(uint8_t pid, uint8_t a, uint8_t b, uint8_t c, uint8_t d, uint8_t e);
+// void carconnect();
+
+// void setup() {
+//   Serial.begin(115200);
+
+//   if (MCP2515.config(MCP2515_STDEXT, CAN_500KBPS, MCP2515_8MHZ) == CAN_OK) {
+//     // Serial.println("Setup Success!");
+//     digitalWrite(INTERNAL_LED, HIGH);
+//     delay(500);
+//     digitalWrite(INTERNAL_LED, LOW);
+//   } else {
+//     // Serial.println("Setup Failed");
+//   }
+//   delay(500);
+
+//   if (MCP2515.setNormalMode() == MODE_NORMAL) {
+//     // Serial.println("Set to Normal Mode successfully!");
+//   } else {
+//     // Serial.println("Failed to set Normal Mode");
+//   }
+
+//   // if (MCP2515.setLoopbackMode() == MODE_LOOPBACK) {
+//   //   Serial.println("Set to Loop Back Mode successfully!");
+//   //   digitalWrite(INTERNAL_LED, HIGH);
+//   //   delay(500);
+//   //   digitalWrite(INTERNAL_LED, LOW);
+//   // } else {
+//   //   // Serial.println("Failed to set Loop Back Mode");
+//   // }
+
+//   pinMode(INTERNAL_LED, OUTPUT);
+//   pinMode(MCP2515_INT, INPUT);
+
+//   WiFi.mode(WIFI_STA);
+
+//   Serial.print("Connecting to Wi-Fi");
+//   WiFi.begin(ssid, password);
+//   while (WiFi.status() != WL_CONNECTED) {
+//     digitalWrite(INTERNAL_LED, HIGH);
+//     delay(500);
+//     digitalWrite(INTERNAL_LED, LOW);
+//     // Serial.print(".");
+//   }
+//   Serial.println("Wi-Fi connected!");
+
+//   client.setServer(mqtt_server, mqtt_port);
+//   client.setBufferSize(1000);
+
+//   jsonUser["collection_id"] = car_collection_id;
+//   jsonUser["id"] = car_id;
+
+//   String csvcol = "#,ect,engine_rpm,iat,manifold_air_pressure,runtime,stft,throttle_position,vehicle_speed";  //
+//   Serial.println(csvcol);
+// }
+
+
 // void reconnect() {
 //   while (!client.connected()) {
 //     Serial.print("Attempting MQTT connection...");
@@ -169,7 +177,7 @@
 // }
 
 // void loop() {
-//   if (!client.connected()) {  // Fixed the missing parenthesis and semicolon
+//   if (!client.connected()) {
 //     reconnect();
 //   }
 //   client.loop();
@@ -186,7 +194,7 @@
 
 //     digitalWrite(INTERNAL_LED, HIGH);
 
-//     Serial.print("Message Response:     ");
+//     // Serial.print("Message Response:     ");
 //     // char messageString[128];
 //     // sprintf(messageString, "ID: 0x%.8lX  DLC: %1d  Data:", (RX_ID & 0x1FFFFFFF), dlc);
 //     // Serial.print(messageString);
@@ -216,7 +224,7 @@
 //   }
 
 //   if (allResponsesReceived) {
-//     carconnect();  // Fixed the missing semicolon
+//     carconnect();
 //     memset(responseReceived, 0, sizeof(responseReceived));
 //     digitalWrite(INTERNAL_LED, HIGH);
 //     delay(250);
@@ -232,69 +240,62 @@
 //   switch (static_cast<PID_CODES>(pid)) {
 //     case PID_ENGINE_LOAD:
 //       engine_load = (a / 2.55);
-//        Serial.print("Manifold Absolute Pressure (kPa) = ");
-//        Serial.println(manifold_air_pressure);
+//       //  Serial.print("Manifold Absolute Pressure (kPa) = ");
+//       //  Serial.println(manifold_air_pressure);
 //       break;
 
 //     case PID_MANIFOLD_ABSOLUTE_PRESSURE:
 //       manifold_air_pressure = a;
-//        Serial.print("Manifold Absolute Pressure (kPa) = ");
-//        Serial.println(manifold_air_pressure);
+//       //  Serial.print("Manifold Absolute Pressure (kPa) = ");
+//       //  Serial.println(manifold_air_pressure);
 //       break;
 
 //     case PID_ENGINE_COOLANT_TEMPERATURE:
 //       ect = (a - 40);
-//        Serial.print("Engine Coolant Temperature (°C) = ");
-//        Serial.println(ect);
+//       //  Serial.print("Engine Coolant Temperature (°C) = ");
+//       //  Serial.println(ect);
 //       break;
 
 //     case PID_SHORT_TERM_FUEL_TRIM:
 //       stft = ((a / 1.28) - 100);
-//       Serial.print("STFT (%) = ");
-//       Serial.println(stft);
+//       // Serial.print("STFT (%) = ");
+//       // Serial.println(stft);
 //       break;
 
 //     case PID_ENGINE_RPM:
 //       engine_rpm = ((a * 256 + b) / 4);
-//       Serial.print("Engine RPM (RPM) = ");
-//       Serial.println(engine_rpm);
+//       // Serial.print("Engine RPM (RPM) = ");
+//       // Serial.println(engine_rpm);
 //       break;
 
 //     case PID_VEHICLE_SPEED:
 //       vehicle_speed = a;
-//       Serial.print("Vehicle Speed (km/h) =");
-//       Serial.println(vehicle_speed);
+//       // Serial.print("Vehicle Speed (km/h) =");
+//       // Serial.println(vehicle_speed);
 //       break;
 
 //     case PID_INTAKE_AIR_TEMPERATURE:
 //       iat = (a - 40);
-//        Serial.print("Intake Air Pressure (°C) = ");
-//        Serial.println(iat);
+//       //  Serial.print("Intake Air Pressure (°C) = ");
+//       //  Serial.println(iat);
 //       break;
 
 //     case PID_THROTTLE_POSITION:
 //       throttle_position = (a / 2.55);
-//       Serial.print("Throttle Position (%) = ");
-//       Serial.println(throttle_position);
-//       break;
-
-//     case PID_O2_SENSOR_2:
-//       o2_sensor = (a / 100);
-//       o2_sensor2 = (((100 / 128) * B) - 100);
-//       Serial.print("Throttle Position (%) = ");
-//       Serial.println(throttle_position);
+//       // Serial.print("Throttle Position (%) = ");
+//       // Serial.println(throttle_position);
 //       break;
 
 //     case PID_RUN_TIME:
 //       runtime = (((256) * a) + b);
-//       Serial.print("Run Time (s) = ");
-//       Serial.println(runtime);
+//       // Serial.print("Run Time (s) = ");
+//       // Serial.println(runtime);
 //       break;
 
 //     case PID_CONTROL_MODULE_VOLTAGE:
 //       control_module_voltage = (((256 * a) + b) / 1000.0);
-//       Serial.print("Control Module Voltage (V) = ");
-//       Serial.println(control_module_voltage);
+//       // Serial.print("Control Module Voltage (V) = ");
+//       // Serial.println(control_module_voltage);
 //       break;
 
 //     default:
@@ -315,16 +316,16 @@
 //   jsonSensor["catalyst_temperature"] = 0;
 //   jsonSensor["engine_coolant_temperature"] = ect;
 //   jsonSensor["engine_rpm"] = engine_rpm;
-//   jsonSensor["fuel_system_status"] = "None";
+//   jsonSensor["fuel_system_status"] = "('None', '')";
 //   jsonSensor["idle_time"] = 0;
 //   jsonSensor["intake_air_temperature"] = iat;
 //   jsonSensor["intake_manifold_pressure"] = manifold_air_pressure;
 //   jsonSensor["long_term_fuel_trim"] = 0;
 //   jsonSensor["mass_air_flow"] = 0;
-//   jsonSensor["run_time"] = runtime;
+//   jsonSensor["run_time"] = String(runtime) + " second";
 //   jsonSensor["short_term_fuel_trim"] = stft;
 //   jsonSensor["throttle_position"] = throttle_position;
-//   jsonSensor["timestamp"] = 0;
+//   jsonSensor["timestamp"] = "2024-03-25T06:36:03.437811Z";  //Default Value
 //   jsonSensor["vehicle_speed"] = vehicle_speed;
 
 //   StaticJsonDocument<800> jsonData;
@@ -339,7 +340,10 @@
 
 //   //client.publish(hyperbase_topic, data.c_str());
 //   if (client.publish(hyperbase_topic, data.c_str())) {
-//     Serial.println("Data sent successfully");
+//     // Serial.println("Data sent successfully");
+//     // static int count = 1;
+//     String csvlog = String(count++) + "," + String(ect) + "," + String(engine_rpm) + "," + String(iat) + "," + String(manifold_air_pressure) + "," + String(runtime) + "," + String(stft) + "," + String(throttle_position)  + "," + String(vehicle_speed);
+//     Serial.println(csvlog);
 //   } else {
 //     Serial.println("Failed to send data");
 //   }

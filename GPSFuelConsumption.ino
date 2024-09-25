@@ -2,14 +2,12 @@
 // #include <SPI.h>
 // #include <WiFi.h>
 // #include "ThingSpeak.h"
+// #include <TinyGPS++.h>
 
 // WiFiClient client;
 
 // const char* channel_key = "UHJDY9W59LLIYX84";
 // unsigned long channel_number = 1;
-
-// // const char* ssid = "go kost 5";
-// // const char* password = "rumahidaman";
 
 // const char* ssid = "zzulfanrr iPhone";
 // const char* password = "ByUbyTelkomsel";
@@ -21,8 +19,8 @@
 
 // #define LISTEN_ID 0x98DAF101
 // #define RES_ID 0x98DA01F1
-// // #define REQ_ID 0x7DF
-// #define REQ_ID 0x98DB33F1
+// #define REQ_ID 0x7DF
+// // #define REQ_ID 0x98DB33F1
 
 // uint32_t RX_ID;
 // unsigned char dlc;
@@ -31,13 +29,28 @@
 // unsigned long prevTX = 0;
 // const unsigned int invlTX = 1000;
 
+// TinyGPSPlus gps;
+
+// HardwareSerial GPSSerial(1);
+// // HardwareSerial GPSSerial(0);
+
+// float latitude = 0.0;
+// float longitude = 0.0;
+// int gpshour = 0;
+// int gpsminute = 0;
+// int gpssecond = 0;
+// String gpsTime = "00:00:00";  // Default time if GPS time is not available
+
 // void decodePID(uint8_t pid, uint8_t a, uint8_t b, uint8_t c, uint8_t d, uint8_t e);
 // void logPID();
+// void updateGPS();
 
 // void setup() {
 //   Serial.begin(115200);
+//   GPSSerial.begin(9600, SERIAL_8N1, 16, 17);
+//   // GPSSerial.begin(9600, SERIAL_8N1, 16, 17);
 
-//   if (MCP2515.config(MCP2515_STDEXT, CAN_500KBPS, MCP2515_8MHZ) == CAN_OK) {
+//   if (MCP2515.config(MCP2515_STDEXT, CAN_500kbps, MCP2515_8MHZ) == CAN_OK) {
 //     // Serial.println("Setup Success!");
 //     digitalWrite(INTERNAL_LED, HIGH);
 //     delay(500);
@@ -53,34 +66,21 @@
 //     // Serial.println("Failed to set Normal Mode");
 //   }
 
-//   // if (MCP2515.setLoopbackMode() == MODE_LOOPBACK) {
-//   //   // Serial.println("Set to Loop Back Mode successfully!");
-//   //   digitalWrite(INTERNAL_LED, HIGH);
-//   //   delay(500);
-//   //   digitalWrite(INTERNAL_LED, LOW);
-//   // } else {
-//   //   // Serial.println("Failed to set Loop Back Mode");
-//   // }
+//   if (MCP2515.setLoopbackMode() == MODE_LOOPBACK) {
+//     // Serial.println("Set to Loop Back Mode successfully!");
+//     digitalWrite(INTERNAL_LED, HIGH);
+//     delay(500);
+//     digitalWrite(INTERNAL_LED, LOW);
+//   } else {
+//     // Serial.println("Failed to set Loop Back Mode");
+//   }
 
 //   pinMode(INTERNAL_LED, OUTPUT);
 //   pinMode(MCP2515_INT, INPUT);
 
-//   // WiFi.mode(WIFI_STA);
 
-//   // ThingSpeak.begin(client);
-
-//   // // Serial.print("Connecting to Wi-Fi");
-//   // WiFi.begin(ssid, password);
-//   // while (WiFi.status() != WL_CONNECTED) {
-//   //   digitalWrite(INTERNAL_LED, HIGH);
-//   //   delay(500);
-//   //   digitalWrite(INTERNAL_LED, LOW);
-//   //   //   Serial.print(".");
-//   // }
-//   // Serial.println("Wi-Fi connected!");
-
-//   //String csvcol = "#,engine_load,ect,stft,manifold_air_pressure,engine_rpm,vehicle_speed,iat,throttle_position,o2_sensor,o2_sensor2,runtime,control_module_voltage";
-//   String csvcol = "#,manifold_air_pressure,engine_rpm,vehicle_speed,iat";
+//   // String csvcol = "#,engine_load,ect,stft,manifold_air_pressure,engine_rpm,vehicle_speed,iat,throttle_position,latitude,longitude";
+//   String csvcol = "#,manifold_air_pressure,engine_rpm,vehicle_speed,iat,latitude,longitude";  //
 //   Serial.println(csvcol);
 // }
 
@@ -137,63 +137,18 @@
 
 // void loop() {
 
-//   // if (WiFi.status() != WL_CONNECTED) {
-//   //   WiFi.begin(ssid, password);
-//   //   while (WiFi.status() != WL_CONNECTED) {
-//   //     //   delay(500);
-//   //     //   Serial.print(".");
-//   //     digitalWrite(INTERNAL_LED, HIGH);
-//   //     delay(500);
-//   //     digitalWrite(INTERNAL_LED, LOW);
-//   //   }
-//   // }
 //   //*************************************************************************************
 //   //Send CAN Request Message
 //   byte sendStat = MCP2515.sendMessage(REQ_ID, 8, dataSets[currentDataSet]);
-//   // if (sendStat == CAN_OK) {
-//   //   // Serial.println("Message Request Sent Successfully!");
-//   // } else if (sendStat == CAN_TXTIMEOUT) {
-//   //   Serial.println("TX Timeout");
-//   // } else if (sendStat == CAN_MSGTIMEOUT) {
-//   //   // Serial.println("Message Timeout");
-//   // } else {
-//   //   // Serial.println("Error Sending Message");
-//   // }
+
 //   currentDataSet = (currentDataSet + 1) % (sizeof(dataSets) / sizeof(dataSets[0]));
-//   /*
-//   if ((millis() - prevTX) >= invlTX) {
-//     prevTX = millis();
-//     //for (int i = 0; i < sizeof(dataSets) / sizeof(dataSets[0]); i++) {
-//     //byte sendStat = MCP2515.sendMessage(REQ_ID, 8, dataSets[i]);
-//     byte sendStat = MCP2515.sendMessage(REQ_ID, 8, dataSets[currentDataSet]);
-//     if (sendStat == CAN_OK) {
-//       Serial.println("Message Request Sent Successfully!");
-//     } else if (sendStat == CAN_TXTIMEOUT) {
-//       Serial.println("TX Timeout");
-//     } else if (sendStat == CAN_MSGTIMEOUT) {
-//       Serial.println("Message Timeout");
-//     } else {
-//       Serial.println("Error Sending Message");
-//     }
-//     //} //for
-//     currentDataSet = (currentDataSet + 1) % (sizeof(dataSets) / sizeof(dataSets[0]));
-//   } */
+
 //   //*************************************************************************************
 //   //Receive CAN Response Message
 //   if (!digitalRead(MCP2515_INT)) {
 //     MCP2515.receiveMessage(&RX_ID, &dlc, RX_Buff);
 
 //     digitalWrite(INTERNAL_LED, HIGH);
-
-//     // Serial.print("Message Response:     ");
-//     // char messageString[128];
-//     // sprintf(messageString, "ID: 0x%.8lX  DLC: %1d  Data:", (RX_ID & 0x1FFFFFFF), dlc);
-//     // Serial.print(messageString);
-//     // for (byte i = 0; i < dlc; i++) {
-//     //   sprintf(messageString, " 0x%.2X", RX_Buff[i]);
-//     //   Serial.print(messageString);
-//     // }
-//     // Serial.print(",  ");
 
 //     PID = RX_Buff[2];
 //     A = RX_Buff[3];
@@ -205,6 +160,7 @@
 //     decodePID(PID, A, B, C, D, E);
 //     digitalWrite(INTERNAL_LED, LOW);
 //   }
+
 //   //*************************************************************************************
 //   bool allResponsesReceived = true;
 //   for (int i = 0; i < sizeof(dataSets) / sizeof(dataSets[0]); i++) {
@@ -215,11 +171,23 @@
 //   }
 
 //   if (allResponsesReceived) {
+
+//     while (GPSSerial.available() > 0) {
+//       gps.encode(GPSSerial.read());
+//       if (gps.location.isValid()) {
+//         latitude = gps.location.lat();
+//         longitude = gps.location.lng();
+//       } else {
+
+//       }
+//     }
+
 //     static int count = 1;
 //     //String csvlog = String(count++) + "," + String(engine_load) + "," + String(ect) + "," + String(stft) + "," + String(manifold_air_pressure) + "," + String(engine_rpm) +  "," + String(vehicle_speed) + "," + String(iat) +  "," + String(throttle_position) + "," + String(o2_sensor) + "," + String(o2_sensor2) + "," + String(runtime) + "," + String(control_module_voltage);
-//     String csvlog = String(count++) + "," + String(manifold_air_pressure) + "," + String(engine_rpm) +  "," + String(vehicle_speed) + "," + String(iat);
+//     String csvlog = String(count++) + "," + String(manifold_air_pressure) + "," + String(engine_rpm) + "," + String(vehicle_speed) + "," + String(iat) + "," + String(latitude, 6) + "," + String(longitude, 6);  // + "," + String(gpsTime)
 //     Serial.println(csvlog);
-//     //logPID();
+
+//     // logPID();
 //     memset(responseReceived, 0, sizeof(responseReceived));
 //     digitalWrite(INTERNAL_LED, HIGH);
 //     delay(250);
@@ -229,6 +197,9 @@
 //     delay(250);
 //     digitalWrite(INTERNAL_LED, LOW);
 //   }
+//   //Reset GPS data
+//   latitude = 0.0;
+//   longitude = 0.0;
 // }
 
 // void decodePID(uint8_t pid, uint8_t a, uint8_t b, uint8_t c, uint8_t d, uint8_t e) {
@@ -322,19 +293,26 @@
 //   ThingSpeak.setField(7, iat);
 //   ThingSpeak.setField(8, engine_load);
 
-
 //   int updateStat = ThingSpeak.writeFields(channel_number, channel_key);
-
 
 //   if (updateStat == 200) {
 //     digitalWrite(INTERNAL_LED, HIGH);
 //     delay(250);
 //     digitalWrite(INTERNAL_LED, LOW);
 
-//     static int count = 1;
-//     String csvlog = String(count++) + "," + String(engine_load) + "," + String(ect) + "," + String(stft) + "," + String(manifold_air_pressure) + "," + String(engine_rpm) +  "," + String(vehicle_speed) + "," + String(iat) +  "," + String(throttle_position) + "," + String(o2_sensor) + "," + String(o2_sensor2) + "," + String(runtime) + "," + String(control_module_voltage);
-//     Serial.println(csvlog);
+//     while (GPSSerial.available() > 0) {
+//       gps.encode(GPSSerial.read());
+//       if (gps.location.isValid()) {
+//         latitude = gps.location.lat();
+//         longitude = gps.location.lng();
+//       } else {
+//         // Set default values if GPS data is not available
+//       }
+//     }
 
+//     static int count = 1;
+//     String csvlog = String(count++) + "," + String(manifold_air_pressure) + "," + String(engine_rpm) + "," + String(vehicle_speed) + "," + String(iat) + "," + String(latitude, 6) + "," + String(longitude, 6);  // + "," + String(gpsTime)
+//     Serial.println(csvlog);
 //   } else {
 //     digitalWrite(INTERNAL_LED, HIGH);
 //     delay(1000);

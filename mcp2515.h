@@ -41,7 +41,12 @@ public:  //used externally, functions,
   uint8_t setNormalMode();
 
   void mcp2515_reset(void);
+  void mcp2515_setSleepWakeup(uint8_t enable);                              // Enable or disable the wake up interrupt (If disabled the MCP2515 will not be woken up by CAN bus activity)
   uint8_t mcp2515_rate(const uint8_t CANSpeed, const uint8_t CANClock);
+
+  uint8_t readRegister(const uint8_t spi_reg) {
+    return mcp2515_readRegister(spi_reg);
+  }
 
 private:  //used internally, functions,
 
