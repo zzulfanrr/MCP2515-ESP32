@@ -33,7 +33,7 @@ const unsigned long debounceDelay = 1000;  // 1s debounce
 
 // periodic logging
 unsigned long lastLogTime = 0;
-const unsigned long logInterval = 2000;
+const unsigned long logInterval = 2000; 
 
 void decodePID(uint8_t pid, uint8_t a, uint8_t b, uint8_t c, uint8_t d, uint8_t e);
 void logPID();
@@ -49,7 +49,7 @@ void setup() {
   if (wakeup_reason == ESP_SLEEP_WAKEUP_EXT0) {
     Serial.println("Wakeup caused by external signal using RTC_IO");
     // wake up by external signal
-  } else if (wakeup_reason == ESP_SLEEP_WAKEUP_TIMER) {  // main wake up cause
+  } else if (wakeup_reason == ESP_SLEEP_WAKEUP_TIMER) { // main wake up cause
     Serial.println("Wakeup caused by timer");
     // wake up by timer
   } else {
@@ -65,13 +65,9 @@ void setup() {
     Serial.println("Setup Failed");
   }
 
-  // if (MCP2515.setNormalMode() != MODE_NORMAL) {
-  //   Serial.println("Failed to set Normal Mode");
-  // }
-
-  if (MCP2515.setLoopbackMode() == MODE_LOOPBACK) {
-    Serial.println("set Loopback Mode done");
-  } else
+  if (MCP2515.setNormalMode() != MODE_NORMAL) {
+    Serial.println("Failed to set Normal Mode");
+  }
 
   MCP2515.mcp2515_setSleepWakeup(1);
 
@@ -176,9 +172,9 @@ void updateCarState() {
     firstRun = false;
   }
 
-  if (control_module_voltage > 13.5) {  // 13.5 - 14.7
+  if (control_module_voltage > 13.5) { // 13.5 - 14.7
     newState = CAR_ENGINE_ON;
-  } else if (control_module_voltage > 12.0) {  // 12.0 - 12.6
+  } else if (control_module_voltage > 12.0) { // 12.0 - 12.6
     newState = CAR_ACC_ON;
   } else {
     newState = CAR_OFF;
@@ -222,8 +218,8 @@ void handleCarState() {
 }
 
 void sendOBDRequests() {
-  bool receivedResponse = false;
-  unsigned long requestStartTime = millis();
+  bool receivedResponse = false;              
+  unsigned long requestStartTime = millis(); 
 
   for (int i = 0; i < sizeof(dataSets) / sizeof(dataSets[0]); i++) {
     byte sendStat = MCP2515.sendMessage(REQ_ID, 8, dataSets[i]);
@@ -234,7 +230,7 @@ void sendOBDRequests() {
     // }
     // delay(500);
     unsigned long waitTime = millis();
-    while (millis() - waitTime < 100) {
+    while (millis() - waitTime < 100) {  
       if (!digitalRead(MCP2515_INT)) {
         MCP2515.receiveMessage(&RX_ID, &dlc, RX_Buff);
         if (RX_ID == 0x98DAF10E) {
@@ -252,11 +248,11 @@ void sendOBDRequests() {
           }
           Serial.println();
           decodePID(RX_Buff[2], RX_Buff[3], RX_Buff[4], RX_Buff[5], RX_Buff[6], RX_Buff[7]);
-          receivedResponse = true;
+          receivedResponse = true; 
         }
       }
     }
-    delay(100);
+    delay(100);  
   }
 
   prevTX = millis();  // Update prev Tx time
@@ -265,9 +261,9 @@ void sendOBDRequests() {
   if (!receivedResponse) {
     Serial.println("No OBD2 response received, assuming car is off.");
     currentState = CAR_OFF;
-    enterSleepMode();
+    enterSleepMode(); 
   } else {
-
+    
     bool allResponsesReceived = true;
     for (int i = 0; i < sizeof(dataSets) / sizeof(dataSets[0]); i++) {
       if (!responseReceived[i]) {
@@ -276,7 +272,7 @@ void sendOBDRequests() {
       }
     }
 
-    // all response received = logging
+    // all response received = logging 
     if (allResponsesReceived) {
       logPID();
       // Reset array
