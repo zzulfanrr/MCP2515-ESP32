@@ -239,7 +239,7 @@ void sendOBDRequests() {
           Serial.print(RX_ID, HEX);
           Serial.print("       DLC: ");
           Serial.println(dlc);
-          // Tampilkan data yang diterima
+          
           Serial.print("Received Data: ");
           for (int i = 0; i < 8; i++) {
             Serial.print("0x");
