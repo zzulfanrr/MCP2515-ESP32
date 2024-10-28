@@ -1,7 +1,7 @@
 #include "mcp2515.h"
 #include <SPI.h>
 #include "ThingSpeak.h"
-#include <TinyGPS++.h>
+// #include <TinyGPS++.h>
 
 MCP2515 MCP2515(5);
 #define MCP2515_INT 21
