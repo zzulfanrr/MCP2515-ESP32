@@ -7,11 +7,12 @@ MCP2515 MCP2515(5);
 #define MCP2515_INT 21
 #define INTERNAL_LED 2
 
-#define LISTEN_ID 0x98DAF101
 // Honda Brio
+#define LISTEN_ID 0x98DAF101
 #define RES_ID 0x98DA01F1
 #define REQ_ID 0x98DB33F1
 
+// Enum to represent the various states of a car
 enum CarState {
   CAR_OFF,
   CAR_ACC_ON,
@@ -57,6 +58,7 @@ void setup() {
     // boot normal
   }
 
+  // Initialize/Config
   if (MCP2515.config(MCP2515_STDEXT, CAN_500kbps, MCP2515_8MHZ) == CAN_OK) {
     digitalWrite(INTERNAL_LED, HIGH);
     delay(500);
@@ -77,6 +79,7 @@ void setup() {
   Serial.println("#,timestamp,carstate,MAP,RPM,VSS,IAT,CMV");
 }
 
+//Data sets for Parameter ID
 byte dataSets[][8] = {
   { 0x02, 0x01, 0x42, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA },  // Control Module Voltage
   { 0x02, 0x01, 0x0B, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA },  // Manifold Absolute Pressure
@@ -161,6 +164,7 @@ void loop() {
   // }
 }
 
+// Update Car State with PID 0x42 for determining Car Acc/Engine On/Off
 void updateCarState() {
   static bool firstRun = true;
   unsigned long currentMillis = millis();
@@ -192,6 +196,7 @@ void updateCarState() {
   }
 }
 
+// Handling Car State
 void handleCarState() {
   static unsigned long lastWakeTime = 0;
   unsigned long currentTime = millis();
@@ -216,6 +221,7 @@ void handleCarState() {
   }
 }
 
+// Sending Request - Receive Response + Decode 
 void sendOBDRequests() {
   bool receivedResponse = false;              
   unsigned long requestStartTime = millis(); 
@@ -280,6 +286,7 @@ void sendOBDRequests() {
   }
 }
 
+// Placeholder for Sleep Mode
 void enterSleepMode() {
   if (MCP2515.setSleepMode() == MODE_SLEEP) {
     Serial.println("MCP2515 entering sleep mode");
@@ -295,6 +302,7 @@ void enterSleepMode() {
   esp_deep_sleep_start();
 }
 
+// Decode PID to Physical/Decimal Value
 void decodePID(uint8_t pid, uint8_t a, uint8_t b, uint8_t c, uint8_t d, uint8_t e) {
 
   switch (static_cast<PID_CODES>(pid)) {
@@ -324,6 +332,7 @@ void decodePID(uint8_t pid, uint8_t a, uint8_t b, uint8_t c, uint8_t d, uint8_t 
   }
 }
 
+// Log PID to CSV after data acquisition
 void logPID() {
   static int count = 1;
   String logMessage = String(count++) + "," + String(millis()) + "," + String(currentState) + "," + String(manifold_absolute_pressure) + "," + String(engine_speed) + "," + String(vehicle_speed) + "," + String(intake_air_temperature) + "," + String(control_module_voltage);

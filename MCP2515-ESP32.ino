@@ -43,14 +43,14 @@
 //     // Serial.println("Failed to set Normal Mode");
 //   }
 
-//   // if (MCP2515.setLoopbackMode() == MODE_LOOPBACK) {
-//   //   // Serial.println("Set to Loop Back Mode successfully!");
-//   //   digitalWrite(INTERNAL_LED, HIGH);
-//   //   delay(500);
-//   //   digitalWrite(INTERNAL_LED, LOW);
-//   // } else {
-//   //   // Serial.println("Failed to set Loop Back Mode");
-//   // }
+//   if (MCP2515.setLoopbackMode() == MODE_LOOPBACK) {
+//     // Serial.println("Set to Loop Back Mode successfully!");
+//     digitalWrite(INTERNAL_LED, HIGH);
+//     delay(500);
+//     digitalWrite(INTERNAL_LED, LOW);
+//   } else {
+//     // Serial.println("Failed to set Loop Back Mode");
+//   }
 
 //   pinMode(INTERNAL_LED, OUTPUT);
 //   pinMode(MCP2515_INT, INPUT);
